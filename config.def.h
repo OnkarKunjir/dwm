@@ -1,4 +1,5 @@
 /* See LICENSE file for copyright and license details. */
+#include <X11/XF86keysym.h>
 
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
@@ -45,13 +46,14 @@ static const int resizehints = 1;    /* 1 means respect size hints in tiled resi
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]=",      tile },    /* first entry is default */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
+	{ "[T]",      tile },    /* first entry is default */
+	{ "[F]",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
 };
 
 /* key definitions */
-#define MODKEY Mod1Mask
+// #define MODKEY Mod1Mask
+#define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -63,8 +65,29 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+// static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *dmenucmd[] = { "/home/onkar/.local/bin/mdmenu_run" ,  NULL };
 static const char *termcmd[]  = { "st", NULL };
+
+// custom commands
+// brightness
+static const char *brightness_up[]  = { "/home/onkar/.local/bin/dwm_brightness" ,  NULL };
+static const char *brightness_down[]  = { "/home/onkar/.local/bin/dwm_brightness" , "dec" ,  NULL };
+// volume
+static const char *volume_up[]  = { "/home/onkar/.local/bin/dwm_volume" , "inc" ,  NULL };
+static const char *volume_down[]  = { "/home/onkar/.local/bin/dwm_volume" , "dec" ,  NULL };
+static const char *volume_toggle[]  = { "/home/onkar/.local/bin/dwm_volume" ,  NULL };
+// screenshot
+//static const char *print_screen[]  = { "scrot" , "%Y-%m-%d-%s_screenshot.jpg" , "-e", "mv $f ~/Pictures/" , NULL };
+static const char *print_screen[]  = { "/home/onkar/.local/bin/dwm_screenshot" ,  NULL };
+// powerctl
+static const char *powerctl[] = { "/home/onkar/.local/bin/dwm_power" , NULL};
+// bluetooth
+static const char *bluetooth[] = { "/home/onkar/.local/bin/dwm_bluetooth" , NULL};
+//search file in home
+static const char *search_home[] = { "/home/onkar/.local/bin/search_home" , NULL};
+//connect to wifi network
+static const char *connect_wifi[] = { "/home/onkar/.local/bin/connect_wifi" , NULL};
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -101,6 +124,17 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+
+	{ 0,			XF86XK_MonBrightnessUp , 	spawn , 	{.v = brightness_up} } ,
+	{ 0,			XF86XK_MonBrightnessDown , 	spawn , 	{.v = brightness_down} } ,
+	{ 0,			XK_Print , 			spawn , 	{.v = print_screen} } ,
+	{ 0,			XF86XK_AudioRaiseVolume , 	spawn , 	{.v = volume_up} } ,
+	{ 0,			XF86XK_AudioLowerVolume , 	spawn , 	{.v = volume_down} } ,
+	{ 0,			XF86XK_AudioMute , 		spawn , 	{.v = volume_toggle} } ,
+	{ MODKEY|ControlMask, 		XK_d,			spawn ,		{.v = powerctl}},
+	{ MODKEY|ShiftMask, 		XK_b,			spawn ,		{.v = bluetooth}},
+	{ MODKEY|ShiftMask, 		XK_n,			spawn ,		{.v = connect_wifi}},
+	{ MODKEY, 			XK_s,			spawn ,		{.v = search_home}},
 };
 
 /* button definitions */
