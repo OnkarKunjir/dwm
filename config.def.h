@@ -2,7 +2,7 @@
 #include <X11/XF86keysym.h>
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
@@ -11,19 +11,22 @@ static const unsigned int gappov    = 10;       /* vert outer gap between window
 static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "monospace:size=10" };
-static const char dmenufont[]       = "monospace:size=10";
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
-static const unsigned int baralpha = 0xd0;
+// static const char *fonts[]          = { "Hack:pixelsize=18:antialias=true:autohint=true", "Material Icons:style=Regular:size=16" };
+static const char *fonts[]          = { "Open Sans:style=Regular:size=14", "Material Icons:style=Regular:size=14" };
+static const char dmenufont[]       = "Hack:pixelsize=18:antialias=true:autohint=true";
+// static const unsigned int baralpha = 0xd0;
+static const unsigned int baralpha = 0xff;
 static const unsigned int borderalpha = OPAQUE;
-static const char *colors[][3]      = {
-	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+static char normbgcolor[]           = "#222222";
+static char normbordercolor[]       = "#444444";
+static char normfgcolor[]           = "#bbbbbb";
+static char selfgcolor[]            = "#eeeeee";
+static char selbordercolor[]        = "#005577";
+static char selbgcolor[]            = "#005577";
+static char *colors[][3] = {
+       /*               fg           bg           border   */
+       [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
+       [SchemeSel]  = { selfgcolor,  selbgcolor,  selbordercolor  },
 };
 static const unsigned int alphas[][3]      = {
 	/*               fg      bg        border     */
@@ -70,7 +73,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-// static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+// static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
 static const char *dmenucmd[] = { "/home/onkar/.local/bin/mdmenu_run" ,  NULL };
 static const char *termcmd[]  = { "st", NULL };
 
@@ -135,6 +138,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+	{ MODKEY,                       XK_F5,     xrdb,           {.v = NULL } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
@@ -146,16 +150,16 @@ static Key keys[] = {
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 
-	{ 0,			XF86XK_MonBrightnessUp , 	spawn , 	{.v = brightness_up} } ,
-	{ 0,			XF86XK_MonBrightnessDown , 	spawn , 	{.v = brightness_down} } ,
-	{ 0,			XK_Print , 			spawn , 	{.v = print_screen} } ,
-	{ 0,			XF86XK_AudioRaiseVolume , 	spawn , 	{.v = volume_up} } ,
-	{ 0,			XF86XK_AudioLowerVolume , 	spawn , 	{.v = volume_down} } ,
-	{ 0,			XF86XK_AudioMute , 		spawn , 	{.v = volume_toggle} } ,
-	{ MODKEY|ControlMask, 		XK_d,			spawn ,		{.v = powerctl}},
-	{ MODKEY|ShiftMask, 		XK_b,			spawn ,		{.v = bluetooth}},
-	{ MODKEY|ShiftMask, 		XK_n,			spawn ,		{.v = connect_wifi}},
-	{ MODKEY, 			XK_s,			spawn ,		{.v = search_home}},
+	{ 0,			                      XF86XK_MonBrightnessUp , 	  spawn , 	{.v = brightness_up} } ,
+	{ 0,			                      XF86XK_MonBrightnessDown , 	spawn , 	{.v = brightness_down} } ,
+	{ 0,			                      XK_Print , 			            spawn , 	{.v = print_screen} } ,
+	{ 0,			                      XF86XK_AudioRaiseVolume , 	spawn , 	{.v = volume_up} } ,
+	{ 0,			                      XF86XK_AudioLowerVolume , 	spawn , 	{.v = volume_down} } ,
+	{ 0,			                      XF86XK_AudioMute , 		      spawn , 	{.v = volume_toggle} } ,
+	{ MODKEY|ControlMask, 		      XK_d,			                  spawn ,		{.v = powerctl}},
+	{ MODKEY|ShiftMask, 		        XK_b,			                  spawn ,		{.v = bluetooth}},
+	{ MODKEY|ShiftMask, 		        XK_n,			                  spawn ,		{.v = connect_wifi}},
+	{ MODKEY, 			                XK_s,			                  spawn ,		{.v = search_home}},
 };
 
 /* button definitions */
