@@ -21,7 +21,7 @@ static const char *fonts[] = {"Open Sans:style=Regular:size=14",
                               "Material Icons:style=Regular:size=14"};
 static const char dmenufont[] =
     "Hack:pixelsize=18:antialias=true:autohint=true";
-// static const unsigned int baralpha = 0xd0;
+
 static const unsigned int baralpha = 0xff;
 static const unsigned int borderalpha = OPAQUE;
 static char normbgcolor[] = "#222222";
@@ -42,7 +42,7 @@ static const unsigned int alphas[][3] = {
 };
 
 /* tagging */
-static const char *tags[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
+static const char *tags[] = {"●", "●", "●", "●", "●"};
 
 static const Rule rules[] = {
     /* xprop(1):
