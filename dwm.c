@@ -794,7 +794,7 @@ void drawbar(Monitor *m) {
       //          m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
       //          urg & 1 << i);
 
-			drw_rect(drw, x + boxw, 0, w - ( 2 * boxw + 1), boxw,
+			drw_rect(drw, x + boxw, 0, w - ( 2 * boxw + 1), 2,
 			    m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
 			    urg & 1 << i);
 
